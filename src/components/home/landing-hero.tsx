@@ -5,7 +5,18 @@ import { ArrowRight, ShieldCheck, Star } from "lucide-react";
 export function LandingHero() {
   return (
     <section className="relative overflow-hidden bg-jet text-white">
-      <div className="mx-auto grid max-w-7xl gap-12 px-4 py-16 sm:px-6 lg:grid-cols-2 lg:items-center lg:py-24 lg:px-8">
+      {/* Futuristic background image */}
+      {/* eslint-disable-next-line @next/next/no-img-element */}
+      <img
+        src="/hero-futuristic-bg.png"
+        alt=""
+        aria-hidden="true"
+        className="pointer-events-none absolute inset-0 z-0 h-full w-full object-cover"
+      />
+      {/* Gradient overlays to keep text legible while letting the glow shine through */}
+      <div className="pointer-events-none absolute inset-0 z-0 bg-gradient-to-r from-jet/75 via-jet/35 to-jet/10" />
+      <div className="pointer-events-none absolute inset-0 z-0 bg-gradient-to-t from-jet/60 via-transparent to-jet/30" />
+      <div className="relative z-10 mx-auto grid max-w-7xl gap-12 px-4 py-16 sm:px-6 lg:grid-cols-2 lg:items-center lg:py-24 lg:px-8">
         <div>
           <span className="inline-flex items-center rounded-full border border-crimson/40 bg-crimson/10 px-3 py-1 text-xs font-medium text-crimson">
             South Africa&apos;s marketplace for verified local sellers
