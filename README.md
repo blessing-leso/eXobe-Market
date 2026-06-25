@@ -8,6 +8,7 @@ npx prisma generate
 npx prisma db push          # creates tables in your Supabase project
 npm run db:seed             # optional: seeds 3 demo vendors + 5 listings
 npm run dev
+```
 ## 2. Stack and AI tools used
 Stack: Next.js 16 (App Router) + TypeScript + Tailwind CSS v4, Zustand (cart), Prisma ORM + Supabase Postgres, Supabase Storage (images), Zod (validation), deployed on Vercel. AI tools used: I used Claude on the Next.js project I built to generate the Prisma schema, API routes, and page components from a spec I directed, and as a sounding board on the marketplace data model. I then used v0 to revamp my frontend.
 ## 3. Key decisions made
