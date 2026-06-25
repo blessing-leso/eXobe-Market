@@ -1,5 +1,7 @@
 # eXobe Africa — Marketplace Build (Phase 2 Technical Assessment)
-## 1. How to run it Live: (https://exobe-market-ochre.vercel.app/)  Locally:
+## 1. How to run it Live: (https://exobe-market-ochre.vercel.app/)  
+### Locally:
+```bash
 npm install
 cp .env.example .env        # fill in Supabase DATABASE_URL, DIRECT_URL, anon key
 npx prisma generate
