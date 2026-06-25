@@ -15,7 +15,7 @@ const STEPS = [
   {
     label: "Get paid",
     title: "Turn browsers into buyers",
-    body: "Buyers enquire, request quotes, or check out directly — all managed from your dashboard.",
+    body: "Buyers enquire, request quotes, or check out directly from your shopfront.",
   },
 ];
 
