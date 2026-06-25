@@ -4,7 +4,7 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { CheckCircle2, ImagePlus, Loader2 } from "lucide-react";
 import { CATEGORIES, PROVINCES } from "@/lib/constants";
-import { uploadProductImage } from "@/lib/supabase";
+import { fileToCompressedDataUrl } from "@/lib/image";
 
 type VendorForm = {
   businessName: string;
@@ -89,10 +89,11 @@ export default function VendorRegisterPage() {
       let imageUrl = "";
       if (imageFile) {
         try {
-          imageUrl = await uploadProductImage(imageFile, vendorId);
+          // Compress the JPEG/PNG into a data URL stored directly with the listing.
+          imageUrl = await fileToCompressedDataUrl(imageFile);
         } catch {
-          // Supabase Storage bucket may not be configured in this environment —
-          // degrade gracefully to a placeholder rather than blocking the listing.
+          // If the image can't be processed, publish the listing without it
+          // rather than blocking the vendor.
           imageUrl = "";
         }
       }

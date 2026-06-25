@@ -18,7 +18,14 @@ const productSchema = z.object({
     "SERVICES",
     "OTHER",
   ]),
-  imageUrl: z.string().url().optional().or(z.literal("")),
+  // Accepts a hosted image URL, an inline data URL (JPEG/PNG), or empty.
+  imageUrl: z
+    .string()
+    .refine((v) => v === "" || /^(https?:|data:image\/)/.test(v), {
+      message: "Invalid image",
+    })
+    .optional()
+    .or(z.literal("")),
   stock: z.coerce.number().int().min(0).default(1),
 });
 
