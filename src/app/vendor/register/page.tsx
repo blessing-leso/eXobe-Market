@@ -4,7 +4,8 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { CheckCircle2, ImagePlus, Loader2 } from "lucide-react";
 import { CATEGORIES, PROVINCES } from "@/lib/constants";
-import { fileToCompressedDataUrl } from "@/lib/image";
+import { fileToCompressedBlob, fileToCompressedDataUrl } from "@/lib/image";
+import { isImageUploadConfigured, uploadProductImage } from "@/lib/supabase";
 
 type VendorForm = {
   businessName: string;
@@ -89,11 +90,17 @@ export default function VendorRegisterPage() {
       let imageUrl = "";
       if (imageFile) {
         try {
-          // Compress the JPEG/PNG into a data URL stored directly with the listing.
-          imageUrl = await fileToCompressedDataUrl(imageFile);
+          if (isImageUploadConfigured) {
+            // Compress, then upload to Supabase Storage and store the public URL.
+            const { blob, ext } = await fileToCompressedBlob(imageFile);
+            imageUrl = await uploadProductImage(blob, vendorId, ext);
+          } else {
+            // Fallback when storage isn't configured: inline a compressed data URL.
+            imageUrl = await fileToCompressedDataUrl(imageFile);
+          }
         } catch {
-          // If the image can't be processed, publish the listing without it
-          // rather than blocking the vendor.
+          // If the image can't be processed/uploaded, publish the listing
+          // without it rather than blocking the vendor.
           imageUrl = "";
         }
       }

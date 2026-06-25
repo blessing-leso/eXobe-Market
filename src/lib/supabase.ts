@@ -22,18 +22,22 @@ function getSupabase(): SupabaseClient | null {
 
 export const isImageUploadConfigured = Boolean(supabaseUrl && supabaseAnonKey);
 
-export async function uploadProductImage(file: File, vendorId: string) {
+export async function uploadProductImage(
+  file: Blob,
+  vendorId: string,
+  ext = "jpg"
+) {
   const supabase = getSupabase();
   if (!supabase) {
     throw new Error("Image upload is not configured in this environment.");
   }
 
-  const ext = file.name.split(".").pop();
+  const contentType = file.type || (ext === "png" ? "image/png" : "image/jpeg");
   const path = `${vendorId}/${crypto.randomUUID()}.${ext}`;
 
   const { error } = await supabase.storage
     .from(PRODUCT_IMAGE_BUCKET)
-    .upload(path, file, { cacheControl: "3600", upsert: false });
+    .upload(path, file, { cacheControl: "3600", upsert: false, contentType });
 
   if (error) throw error;
 
