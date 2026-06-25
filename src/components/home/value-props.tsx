@@ -1,3 +1,4 @@
+"use client";
 import { Truck, ShieldCheck, RotateCcw } from "lucide-react";
 
 const PROPS = [

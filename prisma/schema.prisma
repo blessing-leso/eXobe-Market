@@ -15,8 +15,8 @@ datasource db {
   // Supabase provides these env vars. POSTGRES_PRISMA_URL is the pooled
   // (pgbouncer) connection used at runtime; POSTGRES_URL_NON_POOLING is the
   // direct connection used for migrations / `prisma db push`.
-  url       = env("POSTGRES_PRISMA_URL")
-  directUrl = env("POSTGRES_URL_NON_POOLING")
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
 }
 
 enum ProductCategory {

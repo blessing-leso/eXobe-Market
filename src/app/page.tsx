@@ -11,11 +11,11 @@ export const dynamic = "force-dynamic";
 async function getFeaturedProducts(): Promise<ProductCardData[]> {
   try {
     const products = await prisma.product.findMany({
-      where: { active: true },
       include: { vendor: { select: { businessName: true, verified: true } } },
       orderBy: { views: "desc" },
       take: 8,
     });
+    console.log("ALL PRODUCTS:", products);
     return products.map((p) => ({
       id: p.id,
       name: p.name,

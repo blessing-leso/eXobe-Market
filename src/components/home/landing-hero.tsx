@@ -1,3 +1,4 @@
+"use client";
 import Link from "next/link";
 import { ArrowRight, ShieldCheck, Star } from "lucide-react";
 
