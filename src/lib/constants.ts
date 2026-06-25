@@ -11,6 +11,17 @@ export const CATEGORIES = [
 
 export type CategoryValue = (typeof CATEGORIES)[number]["value"];
 
+export const CATEGORY_IMAGES: Record<string, string> = {
+  FASHION: "/products/fashion.png",
+  ELECTRONICS: "/products/electronics.png",
+  HOME_AND_GARDEN: "/products/home.png",
+  BEAUTY: "/products/beauty.png",
+  FOOD_AND_BEVERAGE: "/products/food.png",
+  ARTS_AND_CRAFTS: "/products/crafts.png",
+  SERVICES: "/products/services.png",
+  OTHER: "/products/other.png",
+};
+
 export function categoryLabel(value: string) {
   return CATEGORIES.find((c) => c.value === value)?.label ?? value;
 }

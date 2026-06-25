@@ -12,6 +12,12 @@ export default function ProductsPage() {
   const [category, setCategory] = useState("ALL");
   const [debouncedQuery, setDebouncedQuery] = useState("");
 
+  // Pick up a ?category= filter passed in from the landing page category grid.
+  useEffect(() => {
+    const fromUrl = new URLSearchParams(window.location.search).get("category");
+    if (fromUrl) setCategory(fromUrl);
+  }, []);
+
   // Debounce the search input so we don't fire a request per keystroke.
   useEffect(() => {
     const t = setTimeout(() => setDebouncedQuery(query), 300);
