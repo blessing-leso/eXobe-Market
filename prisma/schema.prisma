@@ -1,0 +1,93 @@
+// eXobe Marketplace — Data Model
+//
+// Design decision: kept to 4 models. A real marketplace eventually needs
+// Orders, Reviews, Payments, Addresses etc., but for this assessment the
+// goal is to model the core two-sided relationship correctly (Vendor -> Product
+// -> CartItem/Order) without speculative tables that aren't backed by working
+// features. See README "What I chose not to build."
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+enum ProductCategory {
+  FASHION
+  ELECTRONICS
+  HOME_AND_GARDEN
+  BEAUTY
+  FOOD_AND_BEVERAGE
+  ARTS_AND_CRAFTS
+  SERVICES
+  OTHER
+}
+
+enum OrderStatus {
+  PENDING
+  CONFIRMED
+  CANCELLED
+}
+
+model Vendor {
+  id          String   @id @default(cuid())
+  businessName String
+  ownerName   String
+  email       String   @unique
+  phone       String
+  province    String
+  description String?
+  logoUrl     String?
+  verified    Boolean  @default(false)
+  createdAt   DateTime @default(now())
+
+  products    Product[]
+}
+
+model Product {
+  id          String          @id @default(cuid())
+  vendorId    String
+  vendor      Vendor          @relation(fields: [vendorId], references: [id], onDelete: Cascade)
+  name        String
+  description String
+  price       Decimal         @db.Decimal(10, 2)
+  category    ProductCategory
+  imageUrl    String?
+  stock       Int             @default(1)
+  views       Int             @default(0)
+  active      Boolean         @default(true)
+  createdAt   DateTime        @default(now())
+
+  orderItems  OrderItem[]
+
+  @@index([category])
+  @@index([vendorId])
+}
+
+model Order {
+  id          String      @id @default(cuid())
+  buyerName   String
+  buyerEmail  String
+  buyerPhone  String
+  province    String
+  status      OrderStatus @default(PENDING)
+  totalAmount Decimal     @db.Decimal(10, 2)
+  createdAt   DateTime    @default(now())
+
+  items       OrderItem[]
+}
+
+model OrderItem {
+  id        String  @id @default(cuid())
+  orderId   String
+  order     Order   @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  productId String
+  product   Product @relation(fields: [productId], references: [id])
+  vendorId  String  // denormalised for fast per-vendor reporting
+  quantity  Int
+  unitPrice Decimal @db.Decimal(10, 2)
+}
