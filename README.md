@@ -1,5 +1,5 @@
 # eXobe Africa — Marketplace Build (Phase 2 Technical Assessment)
-## 1. How to run it Live: (https://exobe-market-f6vy7r5mu-maboeabp-7968s-projects.vercel.app/)  
+## 1. How to run it Live: (https://exobe-market-ochre.vercel.app/)  
 ### Locally:
 ```bash
 npm install
