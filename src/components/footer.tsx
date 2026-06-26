@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 
 export function Footer() {
   return (
@@ -6,8 +7,14 @@ export function Footer() {
       <div className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
         <div className="grid gap-8 sm:grid-cols-3">
           <div>
-            <span className="font-display text-lg font-bold">
-              eX<span className="text-crimson">o</span>be
+            <span className="inline-flex rounded-lg bg-white px-3 py-1.5">
+              <Image
+                src="/exobe-logo.png"
+                alt="eXobe"
+                width={150}
+                height={117}
+                className="h-11 w-auto object-contain"
+              />
             </span>
             <p className="mt-3 text-sm text-white/60">
               The easiest way to discover, trust, buy, sell, finance, and export authentic
@@ -21,7 +28,6 @@ export function Footer() {
             <ul className="mt-3 space-y-2 text-sm">
               <li><Link href="/products" className="text-white/70 hover:text-white">Browse products</Link></li>
               <li><Link href="/vendor/register" className="text-white/70 hover:text-white">Become a vendor</Link></li>
-              <li><Link href="/vendor/dashboard" className="text-white/70 hover:text-white">Vendor dashboard</Link></li>
             </ul>
           </div>
           <div>

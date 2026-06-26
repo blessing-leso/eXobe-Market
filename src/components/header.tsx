@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { useState } from "react";
 import { Menu, X, ShoppingCart } from "lucide-react";
 import { useCartStore } from "@/stores/cart";
@@ -12,16 +13,20 @@ export function Header() {
   const links = [
     { href: "/products", label: "Browse" },
     { href: "/vendor/register", label: "Sell on eXobe" },
-    { href: "/vendor/dashboard", label: "Vendor Dashboard" },
   ];
 
   return (
     <header className="sticky top-0 z-50 border-b border-steel-border bg-white/95 backdrop-blur">
       <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-3 sm:px-6 lg:px-8">
-        <Link href="/" className="flex items-center gap-2">
-          <span className="font-display text-xl font-bold tracking-tight text-jet">
-            eX<span className="text-crimson">o</span>be
-          </span>
+        <Link href="/" className="flex items-center" aria-label="eXobe home">
+          <Image
+            src="/exobe-logo.png"
+            alt="eXobe"
+            width={150}
+            height={117}
+            priority
+            className="h-12 w-auto object-contain"
+          />
         </Link>
 
         <nav className="hidden items-center gap-8 md:flex">

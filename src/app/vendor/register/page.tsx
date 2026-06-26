@@ -4,7 +4,8 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { CheckCircle2, ImagePlus, Loader2 } from "lucide-react";
 import { CATEGORIES, PROVINCES } from "@/lib/constants";
-import { uploadProductImage } from "@/lib/supabase";
+import { fileToCompressedBlob, fileToCompressedDataUrl } from "@/lib/image";
+import { isImageUploadConfigured, uploadProductImage } from "@/lib/supabase";
 
 type VendorForm = {
   businessName: string;
@@ -89,10 +90,17 @@ export default function VendorRegisterPage() {
       let imageUrl = "";
       if (imageFile) {
         try {
-          imageUrl = await uploadProductImage(imageFile, vendorId);
+          if (isImageUploadConfigured) {
+            // Compress, then upload to Supabase Storage and store the public URL.
+            const { blob, ext } = await fileToCompressedBlob(imageFile);
+            imageUrl = await uploadProductImage(blob, vendorId, ext);
+          } else {
+            // Fallback when storage isn't configured: inline a compressed data URL.
+            imageUrl = await fileToCompressedDataUrl(imageFile);
+          }
         } catch {
-          // Supabase Storage bucket may not be configured in this environment —
-          // degrade gracefully to a placeholder rather than blocking the listing.
+          // If the image can't be processed/uploaded, publish the listing
+          // without it rather than blocking the vendor.
           imageUrl = "";
         }
       }
@@ -163,7 +171,7 @@ export default function VendorRegisterPage() {
       {step === 2 && (
         <>
           <h1 className="font-display text-2xl font-bold tracking-tight">List your first product</h1>
-          <p className="mt-1 text-sm text-steel">Step 2 of 2 — you can add more later from your dashboard.</p>
+          <p className="mt-1 text-sm text-steel">Step 2 of 2 — you can add more listings to your shopfront later.</p>
 
           <form onSubmit={handleProductSubmit} className="mt-8 space-y-5">
             <Field label="Product or service photo">
@@ -216,10 +224,10 @@ export default function VendorRegisterPage() {
           <h1 className="mt-4 font-display text-2xl font-bold tracking-tight">You&apos;re live on eXobe</h1>
           <p className="mt-2 text-steel">Your shopfront and first listing are published.</p>
           <button
-            onClick={() => router.push(`/vendor/dashboard/${vendorId}`)}
+            onClick={() => router.push(`/vendor/${vendorId}`)}
             className="mt-8 w-full rounded-full bg-crimson py-3.5 text-sm font-semibold text-white hover:bg-crimson-dark"
           >
-            Go to your dashboard
+            View your shopfront
           </button>
         </div>
       )}
